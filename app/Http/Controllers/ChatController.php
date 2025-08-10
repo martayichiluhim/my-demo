@@ -5,13 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Message;
 
-/**
- * ChatController handles displaying the chat messages and storing new messages.
- */
 class ChatController extends Controller
 {
     /**
-     * Constructor applies the 'auth' middleware to all controller methods.
+     * Apply authentication middleware to all routes in this controller.
      */
     public function __construct()
     {
@@ -19,13 +16,13 @@ class ChatController extends Controller
     }
 
     /**
-     * Display the chat view with the latest 50 messages.
+     * Show the chat view with the latest 50 messages.
      *
      * @return \Illuminate\View\View
      */
     public function index()
     {
-        // Retrieve the latest 50 messages with their associated user, ordered oldest first
+        // Get latest 50 messages with their user, ordered oldest first
         $messages = Message::with('user')
             ->latest()
             ->take(50)
@@ -36,25 +33,22 @@ class ChatController extends Controller
     }
 
     /**
-     * Handle storing a new chat message submitted via form.
+     * Handle storing a new chat message.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function sendMessage(Request $request)
     {
-        // Validate the input content
         $request->validate([
             'content' => 'required|string|max:500',
         ]);
 
-        // Create a new message associated with the authenticated user
         Message::create([
             'user_id' => auth()->id(),
             'content' => strip_tags($request->input('content')),
         ]);
 
-        // Redirect back to the chat page
-        return redirect()->route('chat.index');
+        return redirect('/chat');
     }
 }
