@@ -22,13 +22,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    // Change this from a method to a property:
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
-    // Move this method OUTSIDE of casts
     public function usersCoolPosts()
     {
         return $this->hasMany(Post::class, 'user_id');

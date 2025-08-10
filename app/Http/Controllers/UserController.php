@@ -11,12 +11,12 @@ class UserController extends Controller
     public function login(Request $request){
         $incomingFields = $request->validate([
             'loginname' => 'required',
-            'password' => 'required'  // fixed key here to 'password'
+            'password' => 'required'  
         ]);
 
         if (auth()->attempt(['name' => $incomingFields['loginname'], 'password' => $incomingFields['password']])) {
             $request->session()->regenerate();
-            return redirect('/');  // redirect on success
+            return redirect('/');  
         }
 
         return back()->withErrors([

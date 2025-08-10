@@ -13,15 +13,24 @@
             overflow-y: scroll;
             background: #f9f9f9;
         }
-        .message { margin-bottom: 10px; }
-        .message strong { color: #333; }
-        form { margin-top: 15px; }
-        textarea { width: 100%; height: 60px; }
+        .message {
+            margin-bottom: 10px;
+        }
+        .message strong {
+            color: #333;
+        }
+        form {
+            margin-top: 15px;
+        }
+        textarea {
+            width: 100%;
+            height: 60px;
+        }
     </style>
 </head>
 <body>
     <h1>Chat Room</h1>
-    <p><a href="/">Back to Home</a></p>
+    <p><a href="{{ url('/') }}">Back to Home</a></p>
 
     <div id="messages">
         @foreach ($messages as $message)
@@ -35,7 +44,7 @@
 
     <form action="{{ url('/chat') }}" method="POST">
         @csrf
-        <textarea name="content" placeholder="Type your message here..." required maxlength="500"></textarea><br>
+        <textarea name="content" placeholder="Type your message here..." required></textarea><br>
         <button type="submit">Send</button>
     </form>
 </body>

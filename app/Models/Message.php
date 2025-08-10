@@ -9,7 +9,6 @@ class Message extends Model
 {
     use HasFactory;
 
-    // Use 'content' instead of 'message' if your DB column is named 'content'
     protected $fillable = ['user_id', 'content'];
 
     public function user()

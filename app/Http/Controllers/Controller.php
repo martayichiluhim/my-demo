@@ -2,59 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Message;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
 
-/**
- * ChatController handles displaying the chat messages and storing new messages.
- */
-class ChatController extends Controller
+class Controller extends BaseController
 {
-    /**
-     * Constructor applies the 'auth' middleware to all controller methods.
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Display the chat view with the latest 50 messages.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index()
-    {
-        // Retrieve the latest 50 messages with their associated user, ordered oldest first
-        $messages = Message::with('user')
-            ->latest()
-            ->take(50)
-            ->get()
-            ->reverse();
-
-        return view('chat', ['messages' => $messages]);
-    }
-
-    /**
-     * Handle storing a new chat message submitted via form.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function sendMessage(Request $request)
-    {
-        // Validate the input content
-        $request->validate([
-            'content' => 'required|string|max:500',
-        ]);
-
-        // Create a new message associated with the authenticated user
-        Message::create([
-            'user_id' => auth()->id(),
-            'content' => strip_tags($request->input('content')),
-        ]);
-
-        // Redirect back to the chat page
-        return redirect()->route('chat.index');
-    }
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }

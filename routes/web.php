@@ -25,8 +25,8 @@ Route::get('/edit-post/{post}', [PostController::class, 'showEditScreen'])->midd
 Route::put('/edit-post/{post}', [PostController::class, 'actuallyUpdatePost'])->middleware('auth');
 Route::delete('/delete-post/{post}', [PostController::class, 'deletePost'])->middleware('auth');
 
-// Chat routes
-Route::middleware('auth')->group(function () {
-    Route::get('/chat', [ChatController::class, 'index']);
-    Route::post('/chat', [ChatController::class, 'sendMessage']);
+// Chat routes with named routes inside auth middleware group
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('/chat', [ChatController::class, 'sendMessage'])->name('chat.sendMessage');
 });
